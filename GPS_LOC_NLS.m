@@ -14,7 +14,7 @@ SV_26 = [23.617496 -11.899369 1.492340]*1e6;
 SV_27 = [14.540070 -12.201965 18.352632]*1e6;
 
 % Weight
-W = 1/(sigm^2)*eye(length(rho));
+W = 1/(sigm^2)*eye(length(rho)); % 
 
 % Initial Conditions
 xc = [0 0 0 0]';
@@ -39,11 +39,25 @@ for i = 1:maxiter
     H = [H1; H2; H3; H4; H5; H6];
 
     dy = [rho(1)-rho1e;rho(2)-rho2e;rho(3)-rho3e;rho(4)-rho4e;rho(5)-rho5e;rho(6)-rho6e];
-    dx = inv(H'*inv(sigm^2)*H)*H'*inv(sigm^2)*dy;
+    dx = inv(H'*W*H)*H'*W*dy;
 
     xc = xc + dx;
     xe(i+1,:) = xc';
 
-    sig3 = diag(inv(H'*inv(sigm^2)*H))'.^(0.5)*3;
+    sig3 = diag(inv(H'*W*H))'.^(0.5)*3;
 
 end
+
+rho1 = sqrt((SV_5(1)-xe(8,1))^2 + (SV_5(2)-xe(8,2))^2 + (SV_5(3)-xe(8,3))^2) + xe(8,4);
+rho2 = sqrt((SV_13(1)-xe(8,1))^2 + (SV_13(2)-xe(8,2))^2 + (SV_13(3)-xe(8,3))^2) + xe(8,4);
+rho3 = sqrt((SV_18(1)-xe(8,1))^2 + (SV_18(2)-xe(8,2))^2 + (SV_18(3)-xe(8,3))^2) + xe(8,4);
+rho4 = sqrt((SV_22(1)-xe(8,1))^2 + (SV_22(2)-xe(8,2))^2 + (SV_22(3)-xe(8,3))^2) + xe(8,4);
+rho5 = sqrt((SV_26(1)-xe(8,1))^2 + (SV_26(2)-xe(8,2))^2 + (SV_26(3)-xe(8,3))^2) + xe(8,4);
+rho6 = sqrt((SV_27(1)-xe(8,1))^2 + (SV_27(2)-xe(8,2))^2 + (SV_27(3)-xe(8,3))^2) + xe(8,4);
+
+check1 = rho(1)-rho1
+check2 = rho(2)-rho2
+check3 = rho(3)-rho3
+check4 = rho(4)-rho4
+check5 = rho(5)-rho5
+check6 = rho(6)-rho6
